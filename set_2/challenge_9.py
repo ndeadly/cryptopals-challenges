@@ -6,4 +6,5 @@ def pkcs7_pad_plaintext(plaintext, block_size):
 
 if __name__ == '__main__':
     plaintext = b'YELLOW SUBMARINE'
-    assert(pkcs7_pad_plaintext(plaintext, 20) == b'YELLOW SUBMARINE\x04\x04\x04\x04')
+    padded_plaintext = pkcs7_pad_plaintext(plaintext, 20)
+    assert(padded_plaintext == b'YELLOW SUBMARINE\x04\x04\x04\x04')
