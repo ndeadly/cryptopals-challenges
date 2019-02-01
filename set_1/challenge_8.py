@@ -1,4 +1,4 @@
-from challenge_7 import aes_decrypt_block
+from set_1.challenge_7 import aes_decrypt_block
 
 
 def using_aes_ecb(ciphertext):

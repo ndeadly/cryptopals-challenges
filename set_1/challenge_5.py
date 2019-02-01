@@ -1,4 +1,4 @@
-from challenge_2 import xor_buffers
+from set_1.challenge_2 import xor_buffers
 
 
 def repeating_key_xor(data, key):

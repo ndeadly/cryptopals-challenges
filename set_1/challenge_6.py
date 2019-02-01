@@ -1,9 +1,9 @@
 import base64
 from itertools import combinations
 
-from challenge_2 import xor_buffers
-from challenge_3 import find_single_byte_xor_key
-from challenge_5 import repeating_key_xor
+from set_1.challenge_2 import xor_buffers
+from set_1.challenge_3 import find_single_byte_xor_key
+from set_1.challenge_5 import repeating_key_xor
 
 
 def hamming_distance(buff1, buff2):

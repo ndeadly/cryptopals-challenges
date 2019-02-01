@@ -1,4 +1,4 @@
-from challenge_3 import score_plaintext, single_byte_repeating_xor
+from set_1.challenge_3 import score_plaintext, single_byte_repeating_xor
 
 
 if __name__ == '__main__':

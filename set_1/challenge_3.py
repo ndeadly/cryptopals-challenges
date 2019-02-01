@@ -1,4 +1,4 @@
-from challenge_2 import xor_buffers
+from set_1.challenge_2 import xor_buffers
 
 # English letter frequency ration taken from
 # https://en.wikipedia.org/wiki/Letter_frequency#Relative_frequencies_of_letters_in_the_English_language
