@@ -10,15 +10,7 @@ def hamming_distance(buff1, buff2):
     return sum(bin(ch).count('1') for ch in xor_buffers(buff1, buff2))
 
 
-if __name__ == '__main__':
-    input1 = b'this is a test'
-    input2 = b'wokka wokka!!!'
-    assert(hamming_distance(input1, input2) == 37)
-
-    # Load encrypted data from file
-    with open('6.txt', 'r') as f:
-        ciphertext = base64.b64decode(f.read())
-
+def find_key_size(ciphertext):
     # Find hamming distances for range of key sizes
     results = []
     for key_size in range(2, 41):
@@ -37,6 +29,12 @@ if __name__ == '__main__':
     # Take first result with lowest score to be keysize
     key_size, score = results[0]
 
+    return key_size
+
+
+def recover_repeating_key(ciphertext):
+    key_size = find_key_size(ciphertext)
+
     key = b''
     for i in range(key_size):
         # Assemble the ith transposed data block
@@ -47,8 +45,21 @@ if __name__ == '__main__':
         # Add block key to the final key
         key += block_key
 
-    print('key size:', key_size)
+    return key
+
+
+if __name__ == '__main__':
+    input1 = b'this is a test'
+    input2 = b'wokka wokka!!!'
+    assert(hamming_distance(input1, input2) == 37)
+
+    # Load encrypted data from file
+    with open('6.txt', 'r') as f:
+        ciphertext = base64.b64decode(f.read())
+
+    key = recover_repeating_key(ciphertext)
+    plaintext = repeating_key_xor(ciphertext, key)
+
     print('key:', key)
     print('ciphertext:', ciphertext.hex())
-    plaintext = repeating_key_xor(ciphertext, key)
     print('plaintext:', plaintext.decode())
