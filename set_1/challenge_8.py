@@ -1,7 +1,9 @@
-from set_1.challenge_7 import aes_decrypt_block
+from set_1.challenge_7 import aes_decrypt_block, expand_key
 
 
 def using_aes_ecb(ciphertext):
+    key_schedule = expand_key(bytes(16))
+
     # Create an empty dictionary (hashmap)
     hmap = dict()
     for i in range(0, len(ciphertext), 16):
@@ -9,7 +11,7 @@ def using_aes_ecb(ciphertext):
         ctext_block = bytearray(ciphertext[i:i + 16])
 
         # Decrypt block with all-zero key
-        ptext_block = aes_decrypt_block(ctext_block, bytes(16))
+        ptext_block = aes_decrypt_block(ctext_block, key_schedule)
 
         try:
             if ctext_block in hmap[ptext_block.hex()]:
