@@ -85,22 +85,38 @@ def inv_shift_rows(input_block):
     return input_block
 
 
+def compute_gf_256_table():
+
+    def _g_mul(b1, b2):
+        ''' Translated from C# example from https://en.wikipedia.org/wiki/Rijndael_MixColumns '''
+
+        p = 0
+        for i in range(8):
+            if (b1 & 1) != 0:
+                p ^= b2
+
+            hi_bit_set = (b2 & 0x80) != 0
+            b2 = (b2 << 1) & 0xff
+            if hi_bit_set:
+                b2 ^= 0x1B
+
+            b1 = (b1 >> 1) & 0xff
+
+        return p
+
+    table = [0] * (256 * 256)
+    for a in range(256):
+        for b in range(256):
+            table[a*256 + b] = _g_mul(a, b)
+
+    return table
+
+
+gf_256_mul = compute_gf_256_table()
+
+
 def g_mul(b1, b2):
-    ''' Translated from C# example from https://en.wikipedia.org/wiki/Rijndael_MixColumns '''
-
-    p = 0
-    for i in range(8):
-        if (b1 & 1) != 0:
-            p ^= b2
-
-        hi_bit_set = (b2 & 0x80) != 0
-        b2 = (b2 << 1) & 0xff
-        if hi_bit_set:
-            b2 ^= 0x1B
-
-        b1 = (b1 >> 1) & 0xff
-
-    return p
+    return gf_256_mul[b1*256 + b2]
 
 
 def mix_columns(input_block):
