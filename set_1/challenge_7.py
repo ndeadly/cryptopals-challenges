@@ -192,11 +192,8 @@ def expand_key(key):
     return key_schedule
 
 
-def aes_encrypt_block(input_block, key):
-    N = len(key) // 4
-    R = N + 7
-
-    key_schedule = expand_key(key)
+def aes_encrypt_block(input_block, key_schedule):
+    R = len(key_schedule)
 
     for r in range(R):
         round_key = key_schedule[r]
@@ -216,11 +213,8 @@ def aes_encrypt_block(input_block, key):
     return input_block
 
 
-def aes_decrypt_block(input_block, key):
-    N = len(key) // 4
-    R = N + 7
-
-    key_schedule = expand_key(key)[::-1]
+def aes_decrypt_block(input_block, key_schedule):
+    R = len(key_schedule)
 
     for r in range(R):
         round_key = key_schedule[r]
@@ -246,8 +240,10 @@ def aes_ecb(input_data, key, operation='encrypt'):
         raise ValueError('Wrong size key. Must be either 128, 192 or 256 bits')
 
     if operation == 'encrypt':
+        key_schedule = expand_key(key)
         aes_func = aes_encrypt_block
     elif operation == 'decrypt':
+        key_schedule = expand_key(key)[::-1]
         aes_func = aes_decrypt_block
     else:
         raise ValueError('Invalid operation argument')
@@ -256,7 +252,7 @@ def aes_ecb(input_data, key, operation='encrypt'):
     output_data = bytearray(len(input_data))
     for i in range(0, len(input_data), 16):
         block = input_data[i:i+16]
-        aes_func(block, key)
+        aes_func(block, key_schedule)
         output_data[i:i+16] = block
 
     return output_data
