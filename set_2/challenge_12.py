@@ -1,4 +1,3 @@
-import sys
 import base64
 import secrets
 
@@ -38,12 +37,9 @@ def detect_block_size(encryption_func):
 
 
 if __name__ == '__main__':
-    # 1.Feed identical bytes of your-string to the function 1 at a time --- start with 1 byte ("A"), then "AA",
-    # then "AAA" and so on. Discover the block size of the cipher
     block_size = detect_block_size(encryption_oracle)
     print('block size:', block_size)
 
-    # 2. Detect that the function is using ECB. You already know, but do this step anyways.
     mode = detect_aes_mode(encryption_oracle)
     print('Oracle is using AES-{}'.format(mode))
 
@@ -61,7 +57,6 @@ if __name__ == '__main__':
             ciphertext = encryption_oracle(input_block + bytes(output) + i.to_bytes(1, 'little'))
             d[ciphertext[q*block_size:q*block_size + block_size].hex()] = i
 
-
         try:
             output_byte = d[encryption_oracle(input_block)[q*block_size:q*block_size + block_size].hex()]
         except KeyError:
@@ -70,4 +65,4 @@ if __name__ == '__main__':
         output.append(output_byte)
         pos += 1
 
-        print(chr(output_byte), end='')
+        print(chr(output_byte), end='', flush=True)
