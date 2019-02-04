@@ -1,6 +1,6 @@
 
 def xor_buffers(buff1, buff2):
-    return bytes([b1 ^ b2 for b1, b2 in zip(buff1, buff2)])
+    return bytearray([b1 ^ b2 for b1, b2 in zip(buff1, buff2)])
 
 
 if __name__ == '__main__':
