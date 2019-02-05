@@ -29,7 +29,7 @@ def encryption_oracle(input_data):
 def detect_block_size(encryption_func):
     block_size = -1
     for i in range(1, 256+1):
-        if hamming_distance(encryption_oracle(bytes(b'A'*i)), encryption_oracle(bytes(b'A'*(i+1)))[:i]) == 0:
+        if hamming_distance(encryption_func(b'A'*i), encryption_func(b'A'*(i+1))[:i]) == 0:
             block_size = i
             break
 
