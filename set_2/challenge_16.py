@@ -17,37 +17,37 @@ iv = secrets.token_bytes(16)
 
 def encrypted_query(userdata):
     query = str1 + bytes(quote(userdata).encode('ascii')) + str2
-    print(query)
     ciphertext = aes_cbc(pkcs7_pad_plaintext(query, 16), secret_key, iv, operation='encrypt')
     return ciphertext
 
 
-def contains_admin_argument(ciphertext):
+def is_admin(ciphertext):
     plaintext = aes_cbc(ciphertext, secret_key, iv, operation='decrypt')
-    print(plaintext)
     query = strip_pkcs7_padding(plaintext, 16)
-    print('query:', query)
     query_obj = parse_qs(query)
-    print('query obj:', query_obj)
-    return 'admin' in query_obj
+    return ('admin' in query_obj) and (query_obj['admin'] == 'true')
 
 
 def main():
     block_size = 16
 
     prefix_length = detect_prefix_length(encrypted_query, block_size)
-    print('prefix length:', prefix_length)
 
-    userdata = b'AadminAtrue'
+    # Compute number of extra bytes required so that our userdata is placed at the start of a block
+    n = block_size - (prefix_length % block_size)
 
+    # Construct userdata string of n (P)adding bytes, a full block of (C)orruptable bytes, and the string we want to
+    # inject with invalid characters
+    userdata = b'P'*n + b'C'*block_size + b'FadminFtrue'
+
+    # Generate encrypted query from the userdata string
     ciphertext = encrypted_query(userdata)
-    print(ciphertext.hex())
-    ciphertext[prefix_length-block_size] ^= ord('A') ^ ord(';')
-    ciphertext[prefix_length-block_size+6] ^= ord('A') ^ ord('=')
-    #print(ciphertext[prefix_length-block_size])
-    #print(ciphertext.hex())
+    print('Admin status before bit flipping:', is_admin(ciphertext))
 
-    print('Admin field present?:', contains_admin_argument(ciphertext))
+    # Flip bits in the corruptable block to transform the F's in our userdata into the required invalid characters
+    ciphertext[prefix_length+n+0] ^= ord('F') ^ ord(';')
+    ciphertext[prefix_length+n+6] ^= ord('F') ^ ord('=')
+    print('Admin status after bit flipping:', is_admin(ciphertext))
 
 
 if __name__ == '__main__':
