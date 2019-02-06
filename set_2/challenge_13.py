@@ -20,7 +20,7 @@ def decrypt_profile(input_data):
 
 
 def parse_qs(query_string):
-    return dict(parse_qsl(query_string))
+    return dict(parse_qsl(query_string.decode('charmap')))
 
 
 def profile_for(email_addr):
@@ -35,4 +35,3 @@ if __name__ == '__main__':
     profile2_encrypted = profile_for((b'AAAAAAAAAAadmin' + bytes([0xb]*11)).decode('utf-8'))
     admin_profile = decrypt_profile(profile1_encrypted[:-16] + profile2_encrypted[16:32])
     print(admin_profile)
-
