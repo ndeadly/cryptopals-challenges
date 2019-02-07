@@ -31,11 +31,11 @@ def generate_session_token():
     iv = secrets.token_bytes(16)
     ciphertext = aes_cbc(padded_plaintext, secret_key, iv, operation='encrypt')
 
-    return ciphertext, iv
+    return iv, ciphertext
 
 
 def consume_session_token(token):
-    ciphertext, iv = token
+    iv, ciphertext = token
     plaintext = aes_cbc(ciphertext, secret_key, iv, operation='decrypt')
     try:
         strip_pkcs7_padding(plaintext, block_size)
@@ -47,19 +47,23 @@ def consume_session_token(token):
 
 def main():
     token = generate_session_token()
-    ciphertext, iv = token
-    print(ciphertext.hex(), iv.hex())
-    for i in range(len(ciphertext)):
-        for j in range(256):
-            corrupted = bytearray(ciphertext.copy())
-            corrupted[i] = j
-            correct_padding = consume_session_token((corrupted, iv))
-            print(correct_padding)
-            '''
-            if correct_padding:
-                print(chr(j))
-                break
-            '''
+    iv, ciphertext = token
+
+    c1 = iv
+    for i in range(0, len(ciphertext), block_size):
+        c2 = ciphertext[i:i+block_size]
+        #print(c1.hex(), c2.hex())
+        c1_mod = bytearray(c1)
+        for j in range(block_size-1, 0, -1):
+            for k in range(256):
+                c1_mod[j] = k
+                #print(c1_mod.hex())
+                if consume_session_token((iv, c1_mod + c2)):
+                    dk_c2 = chr(c1_mod[j] ^ (block_size-j))
+                    print(dk_c2)
+                    break
+
+        c1 = c2
 
 
 if __name__ == '__main__':
