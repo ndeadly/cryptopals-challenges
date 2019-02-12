@@ -35,8 +35,7 @@ def aes_cbc(input_data, key, iv, operation='encrypt'):
     return output_data
 
 
-if __name__ == '__main__':
-
+def main():
     with open('10.txt', 'r') as f:
         ciphertext = base64.b64decode(f.read())
 
@@ -50,3 +49,5 @@ if __name__ == '__main__':
     print(plaintext.decode())
 
 
+if __name__ == '__main__':
+    main()

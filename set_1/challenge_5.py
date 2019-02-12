@@ -6,7 +6,7 @@ def repeating_key_xor(data, key):
     return xor_buffers(data, key_data)
 
 
-if __name__ == '__main__':
+def main():
     key = b'ICE'
     plaintext = b'Burning \'em, if you ain\'t quick and nimble\nI go crazy when I hear a cymbal'
     ciphertext = bytes.fromhex('0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430'
@@ -15,3 +15,7 @@ if __name__ == '__main__':
     result = repeating_key_xor(plaintext, key)
     print(result.hex())
     assert(result == ciphertext)
+
+
+if __name__ == '__main__':
+    main()

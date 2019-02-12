@@ -36,7 +36,7 @@ def detect_block_size(encryption_func):
     return block_size
 
 
-if __name__ == '__main__':
+def main():
     block_size = detect_block_size(encryption_oracle)
     print('block size:', block_size)
 
@@ -66,3 +66,7 @@ if __name__ == '__main__':
         pos += 1
 
         print(chr(output_byte), end='', flush=True)
+
+
+if __name__ == '__main__':
+    main()

@@ -101,10 +101,14 @@ def single_byte_repeating_xor(data, key):
     return xor_buffers(data, key*len(data))
 
 
-if __name__ == '__main__':
+def main():
     ciphertext = bytes.fromhex('1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736')
 
     key = find_single_byte_xor_key(ciphertext)
     plaintext = single_byte_repeating_xor(ciphertext, key)
     print('key:\t\t', key)
     print('plaintext:\t', plaintext.decode())
+
+
+if __name__ == '__main__':
+    main()

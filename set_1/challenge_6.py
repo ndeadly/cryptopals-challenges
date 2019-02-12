@@ -48,7 +48,7 @@ def recover_repeating_key(ciphertext):
     return key
 
 
-if __name__ == '__main__':
+def main():
     input1 = b'this is a test'
     input2 = b'wokka wokka!!!'
     assert(hamming_distance(input1, input2) == 37)
@@ -63,3 +63,7 @@ if __name__ == '__main__':
     print('key:', key)
     print('ciphertext:', ciphertext.hex())
     print('plaintext:', plaintext.decode())
+
+
+if __name__ == '__main__':
+    main()

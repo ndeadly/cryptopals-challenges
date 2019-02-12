@@ -40,6 +40,10 @@ def detect_aes_mode(encryption_func):
         return 'CBC'
 
 
-if __name__ == '__main__':
+def main():
     mode = detect_aes_mode(encryption_oracle)
     print('Detected AES-{} mode in use'.format(mode))
+
+
+if __name__ == '__main__':
+    main()

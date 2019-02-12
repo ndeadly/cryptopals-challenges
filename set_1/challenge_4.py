@@ -1,8 +1,7 @@
 from set_1.challenge_3 import score_plaintext, single_byte_repeating_xor
 
 
-if __name__ == '__main__':
-
+def main():
     with open('4.txt', 'r') as f:
         ciphertexts = [bytes.fromhex(ln) for ln in f.read().splitlines()]
 
@@ -23,3 +22,7 @@ if __name__ == '__main__':
     print('key:\t\t', key)
     print('cyphertext:\t', ciphertext.hex())
     print('plaintext:\t', plaintext.decode())
+
+
+if __name__ == '__main__':
+    main()

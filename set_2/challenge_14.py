@@ -28,7 +28,7 @@ def detect_prefix_length(encryption_func, block_size):
     return prefix_length
 
 
-if __name__ == '__main__':
+def main():
     block_size = 16
     prefix_length = detect_prefix_length(encryption_oracle, block_size)
     print('Detected prefix length:', prefix_length)
@@ -56,3 +56,7 @@ if __name__ == '__main__':
         pos += 1
 
         print(chr(output_byte), end='', flush=True)
+
+
+if __name__ == '__main__':
+    main()

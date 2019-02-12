@@ -29,8 +29,7 @@ def using_aes_ecb(ciphertext):
     return False
 
 
-if __name__ == '__main__':
-
+def main():
     with open('8.txt', 'r') as f:
         ciphertexts = map(bytes.fromhex, f.read().splitlines())
 
@@ -39,3 +38,7 @@ if __name__ == '__main__':
     print('ciphertexts using AES-ECB:')
     for ciphertext in ecb_ciphertexts:
         print(ciphertext.hex())
+
+
+if __name__ == '__main__':
+    main()

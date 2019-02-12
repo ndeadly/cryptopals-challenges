@@ -30,8 +30,12 @@ def profile_for(email_addr):
     return encrypt_profile(unquote(urlencode(d)))
 
 
-if __name__ == '__main__':
+def main():
     profile1_encrypted = profile_for('admin@bar.com')
     profile2_encrypted = profile_for((b'AAAAAAAAAAadmin' + bytes([0xb]*11)).decode('utf-8'))
     admin_profile = decrypt_profile(profile1_encrypted[:-16] + profile2_encrypted[16:32])
     print(admin_profile)
+
+
+if __name__ == '__main__':
+    main()

@@ -258,8 +258,7 @@ def aes_ecb(input_data, key, operation='encrypt'):
     return output_data
 
 
-if __name__ == '__main__':
-
+def main():
     with open('7.txt', 'r') as f:
         ciphertext = base64.b64decode(f.read())
 
@@ -267,3 +266,7 @@ if __name__ == '__main__':
     plaintext = aes_ecb(ciphertext, key, operation='decrypt')
     print('key:', key)
     print('plaintext:', plaintext.decode())
+
+
+if __name__ == '__main__':
+    main()
